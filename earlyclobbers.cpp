@@ -59,7 +59,7 @@ void VecMath_RotateVecs(Vec3* restrict results, int numVecs, const Vec3* restric
 	"		subq.w	#1,%[num]						\n"
 	"loop%=:										\n"
 
-	"		movem.w	(%[vecs])+,%[vx]/%[vy]/%[vz]	\n"
+	"		movem.w	(%[vecs])+,%[vx]/%[vy]/%[vz]	\n"	// BUG: Turns the compiler won't correctly order these registers for movem.
 
 	"		move.w	%[m00_m10],%[t0]				\n"
 	"		muls	%[vx],%[t0]						\n"
