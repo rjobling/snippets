@@ -32,7 +32,10 @@ void VecMath_RotateVecs(Vec3* restrict results, int numVecs, const Vec3* restric
 
 	#if 1
 
-	s16 vx, vy, vz;
+	register s16 vx asm("d1");	// Need to specify these so the movem is ordered correctly.
+	register s16 vy asm("d2");
+	register s16 vz asm("d3");
+
 	s16 t0, t1;
 	u32 m00_m10, m01_m11, m02_m12, m20, m21, m22;
 
@@ -59,7 +62,7 @@ void VecMath_RotateVecs(Vec3* restrict results, int numVecs, const Vec3* restric
 	"		subq.w	#1,%[num]						\n"
 	"loop%=:										\n"
 
-	"		movem.w	(%[vecs])+,%[vx]/%[vy]/%[vz]	\n"	// BUG: Turns out the compiler won't correctly order these registers for movem.
+	"		movem.w	(%[vecs])+,%[vx]/%[vy]/%[vz]	\n"
 
 	"		move.w	%[m00_m10],%[t0]				\n"
 	"		muls	%[vx],%[t0]						\n"
